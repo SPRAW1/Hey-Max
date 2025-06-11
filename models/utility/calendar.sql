@@ -1,21 +1,21 @@
 {{ config(materialized='table') }}
 
-with date_spine as (
-  select
-    date_add('2022-01-01', interval row_number() over () - 1 day) as calendar_date
-  from unnest(generate_array(1, 4000)) 
+WITH date_spine AS (
+  SELECT
+    DATE_ADD('2022-01-01', INTERVAL ROW_NUMBER() OVER () - 1 DAY) AS calendar_date
+  FROM UNNEST(GENERATE_ARRAY(1, 4000)) 
 )
 
-select
+SELECT
   calendar_date,
-  extract(year from calendar_date) as year,
-  extract(month from calendar_date) as month,
-  format_date('%Y-%m', calendar_date) as year_month,
-  extract(week from calendar_date) as week,
-  format_date('%Y-%W', calendar_date) as year_week,
-  extract(dayofweek from calendar_date) as day_of_week,
-  case
-    when extract(dayofweek from calendar_date) in (1, 7) then true
-    else false
-  end as is_weekend
-from date_spine
+  EXTRACT(year FROM calendar_date) AS year,
+  EXTRACT(month FROM calendar_date) AS month,
+  FORMAT_DATE('%Y-%m', calendar_date) AS year_month,
+  EXTRACT(week FROM calendar_date) AS week,
+  FORMAT_DATE('%Y-%W', calendar_date) AS year_week,
+  EXTRACT(dayofweek FROM calendar_date) AS day_of_week,
+  CASE
+    WHEN EXTRACT(dayofweek FROM calendar_date) IN (1, 7) THEN true
+    ELSE false
+  END AS is_weekend
+FROM date_spine
