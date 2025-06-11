@@ -4,6 +4,7 @@ WITH events AS (
     DATE(event_date) AS event_date,
     DATE_TRUNC(DATE(event_date), MONTH) AS month_start
   FROM {{ ref('fct_events') }}
+  WHERE event_flag = 'primary_action'
 ),
 
 user_monthly_activity AS (

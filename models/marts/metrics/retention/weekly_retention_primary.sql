@@ -4,6 +4,7 @@ WITH events AS (
     DATE(event_date) AS event_date,
     DATE_TRUNC(DATE(event_date), WEEK(MONDAY)) AS week_start
   FROM {{ ref('fct_events') }}
+  WHERE event_flag = 'primary_action'
 ),
 
 -- Get unique user-week pairs

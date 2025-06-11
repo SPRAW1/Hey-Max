@@ -9,6 +9,7 @@ events AS (
     user_id,
     DATE(event_date) AS event_date
   FROM {{ ref('fct_events') }}
+  WHERE event_flag = 'primary_action'
 ),
 
 -- Get every unique day a user was active
