@@ -67,19 +67,20 @@ All metrics are visualized in a single Metabase dashboard. Metabase was chosen f
    cd heymax-analytics-engineering
    ```
 
-2. Set up a BigQuery dataset and upload the raw CSVs (`dim_users.csv`, `fct_events.csv`)
+2. Create a dbt Cloud project and connect it to:
+  - This GitHub repo
+  - Your BigQuery account (via the Service Account JSON key)
 
-3. Update your `profiles.yml` with your BigQuery credentials
+3. Upload your source CSVs (event_stream.csv) to BigQuery manually or through a scheduled process to mimic batch ingestion.
 
-4. Run dbt:
-   ```bash
-   dbt deps
-   dbt seed
-   dbt run
-   dbt test
-   ```
+4.In dbt Cloud:
+  - Configure your environment and connection settings
+     Run:
+        dbt seed (if using any seed files — optional)
+        dbt run to build models
+        dbt test to validate models
 
-5. Connect Metabase to BigQuery and import your dashboard using provided SQL models.
+5. Connect Metabase to your BigQuery project, then use the curated models to build and explore dashboards.
 
 
 ---
