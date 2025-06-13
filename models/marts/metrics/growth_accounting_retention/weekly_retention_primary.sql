@@ -1,3 +1,4 @@
+-- Extract only primary user actions from the event stream which are miles_earned or miles_redeemed
 WITH events AS (
   SELECT 
     user_id,
@@ -13,7 +14,7 @@ user_weekly_activity AS (
   FROM events
 ),
 
--- Get previous week each user was active
+-- For each week a user was active, get the previous active week
 user_week_lagged AS (
   SELECT
     user_id,
@@ -48,7 +49,7 @@ weekly_summary AS (
   GROUP BY 1
 ),
 
--- Churn = DAU_prev - retained
+-- Calculate churned users as drop from previous week minus retained
 final_weekly_metrics AS (
   SELECT
     current_week,
@@ -60,31 +61,9 @@ final_weekly_metrics AS (
   FROM weekly_summary
 )
 
+-- Final output: includes quick ratio for growth health indicator
 SELECT 
 *,
 SAFE_DIVIDE((new_users + resurrected_users),churned_users) AS quick_ratio
  FROM final_weekly_metrics
 ORDER BY current_week
-
-
-/*
- -- fringe cases that this logic will not capture
-
- WITH days_diff AS (
-SELECT
-user_id,
-event_date,
-LAG(event_date) OVER (PARTITION BY user_id ORDER BY event_date ASC) AS prev_event_date,
-DATE_DIFF(event_date,LAG(event_date) OVER (PARTITION BY user_id ORDER BY event_date ASC),DAY) AS diff
-FROM {{ref('fct_events')}}
---WHERE user_id = 'u_0000'
-GROUP BY 1,2
-ORDER BY 2,1 ASC
-)
-
-SELECT
-*
-FROM days_diff
-WHERE diff >= 7
-
-*/

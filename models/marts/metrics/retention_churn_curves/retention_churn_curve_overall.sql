@@ -1,4 +1,4 @@
--- Step 1: Identify each user's cohort (first active date)
+-- Identify each user's cohort (first active date)
 WITH user_cohorts AS (
   SELECT
     user_id,
@@ -7,7 +7,7 @@ WITH user_cohorts AS (
   GROUP BY user_id
 ),
 
--- Step 2: Map each user's events to their cohort
+-- Map each user's events to their cohort
 user_activity AS (
   SELECT
     e.user_id,
@@ -18,7 +18,7 @@ user_activity AS (
   LEFT JOIN user_cohorts u ON e.user_id = u.user_id
 ),
 
--- Step 3: Count active users by days since cohort (no cohort split)
+-- Count active users by days since cohort (no cohort split)
 retention_daily AS (
   SELECT
     days_since_cohort,
@@ -27,12 +27,12 @@ retention_daily AS (
   GROUP BY days_since_cohort
 ),
 
--- Step 4: Get total cohort size
+-- Get total cohort size
 cohort_size AS (
   SELECT COUNT(DISTINCT user_id) AS total_users FROM user_cohorts
 )
 
--- Step 5: Calculate overall retention and churn curves
+-- Calculate overall retention and churn curves
 SELECT
   r.days_since_cohort,
   r.retained_users,

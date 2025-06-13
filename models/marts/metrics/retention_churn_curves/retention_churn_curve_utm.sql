@@ -1,4 +1,4 @@
--- Step 1: Identify each user's cohort (first active date) and their user info
+-- Identify each user's cohort (first active date) and their user info
 WITH ranked_first_events AS (
   SELECT
     user_id,
@@ -17,7 +17,7 @@ user_cohorts AS (
   WHERE rn = 1
 ),
 
--- Step 2: Map each user's events to their cohort
+-- Map each user's events to their cohort
 user_activity AS (
   SELECT
     e.user_id,
@@ -32,7 +32,7 @@ user_activity AS (
   AND cohort_date < '2025-06-01'
 ),
 
--- Step 3: Count active users per cohort per day
+-- Count active users per cohort per day
 retention_daily AS (
   SELECT
     --cohort_date,
@@ -45,7 +45,7 @@ retention_daily AS (
   GROUP BY days_since_cohort, utm_source--, platform, country
 ),
 
--- Step 4: Get cohort sizes
+-- Get cohort sizes
 cohort_sizes AS (
   SELECT
     --cohort_date,
@@ -57,7 +57,7 @@ cohort_sizes AS (
   GROUP BY utm_source--, platform, country
 )
 
--- Step 5: Final output with retention and churn
+-- Final output with retention and churn
 SELECT
   r.days_since_cohort,
   r.utm_source,
