@@ -73,7 +73,7 @@ All metrics are visualized in a single Metabase dashboard. Metabase was chosen f
 
 3. Upload your source CSVs (event_stream.csv) to BigQuery manually or through a scheduled process to mimic batch ingestion.
 
-4.In dbt Cloud:
+4. In dbt Cloud:
   - Configure your environment and connection settings
      Run:
         dbt seed (if using any seed files — optional)
