@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: stg_dim_users
+    description: "Distinct user-country mapping for assigning location context."
+    columns:
+      - name: user_id
+        description: "User ID"
+        tests:
+          - unique
+          - not_null
+      - name: country
+        description: "Country associated with the user"
+
+  - name: stg_fct_events
+    description: "Transformed event table with derived fields such as event_date and event_flag for downstream analysis."
+    columns:
+      - name: user_id
+        description: "User ID"
+        tests:
+          - not_null  # Every event must belong to a user
+      - name: event_time
+        description: "Original event timestamp"
+        tests:
+          - not_null  # All events must have a timestamp
+      - name: event_date
+        description: "Date extracted from the timestamp"
+        tests:
+          - not_null  # Derived field, but must be present for date-based analysis
+      - name: event_type
+        description: "Type of event, e.g., miles_earned, miles_redeemed"
+        tests:
+          - not_null
+          - accepted_values:
+            values: ['miles_earned', 'miles_redeemed', 'like', 'share', 'reward_search']
+      - name: event_flag
+        description: "Classified event type: 'primary_action' if the event is miles_earned or miles_redeemed"
+        tests:
+          - accepted_values:
+            values: ['primary_action', 'secondary_action', 'NA']
+      - name: transaction_category
+        description: "Category of the transaction"
+      - name: miles_amount
+        description: "Miles involved in the event"
+      - name: platform
+        description: "Platform used by the user(e.g., Android, iOS)"
+      - name: utm_source
+        description: "Utm_source for the event"
+      - name: country
+        description: "Country associated with the event"
+        tests:
+          - not_null
