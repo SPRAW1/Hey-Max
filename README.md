@@ -76,11 +76,7 @@ Metabase was chosen for its ease of self-service for non-technical users. It all
 
 3. Upload your source CSVs (event_stream.csv) to BigQuery manually or through a scheduled process to mimic batch ingestion.
 
-4. In dbt Cloud:
-  - Configure your environment and connection settings
-     Run:
-        - dbt run to build models
-        - dbt test to validate models
+4. In dbt Cloud, configure your environment connection settings and then trigger DBT run and DBT test
 
 5. Connect Metabase to your BigQuery project, then use the curated models to build and explore dashboards.
 
