@@ -9,9 +9,8 @@ This project simulates the role of an Analytics Engineer at HeyMax, where the go
 - **Metabase** for dashboarding and data exploration
 
 ## 📂 Data Sources
-- `dim_users`
-- `fct_events`
-
+- `event_stream.csv`
+  
 Raw event data was mimicked through CSV uploads in BigQuery, designed for batch processing. This can be automated using scheduled queries or orchestrators like Airflow or dbt Cloud.
 
 ## 🛠️ Data Modeling Workflow
