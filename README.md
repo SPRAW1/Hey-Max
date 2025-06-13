@@ -19,7 +19,11 @@ Raw event data was mimicked through CSV uploads in BigQuery, designed for batch 
 3. **Core Layer**: Final materialized tables (`dim_users`, `fct_events`) used for downstream analytics.
 
 ## 📊 Dashboards & Metrics
-All metrics are visualized in a single Metabase dashboard. Metabase was chosen for its ease of self-service for non-technical users. It allows business stakeholders to create "questions"—custom visualizations using a no-code/low-code SQL interface—making it simple for teams to answer their own questions without technical help.
+All metrics are visualized in a single Metabase dashboard:
+
+https://lofty-anchor.metabaseapp.com/public/dashboard/4508ab26-d632-405c-b797-7795fa320918 
+
+Metabase was chosen for its ease of self-service for non-technical users. It allows business stakeholders to create "questions"—custom visualizations using a no-code/low-code SQL interface—making it simple for teams to answer their own questions without technical help.
 
 ### 📈 Growth & Retention
 - **Daily/Weekly/Monthly Active Users** (DAU/WAU/MAU)
@@ -75,15 +79,11 @@ All metrics are visualized in a single Metabase dashboard. Metabase was chosen f
 4. In dbt Cloud:
   - Configure your environment and connection settings
      Run:
-        dbt seed (if using any seed files — optional)
-        dbt run to build models
-        dbt test to validate models
+        - dbt run to build models
+        - dbt test to validate models
 
 5. Connect Metabase to your BigQuery project, then use the curated models to build and explore dashboards.
 
-
----
-Feel free to fork, clone, and build upon this structure for your own analytics engineering workflows!
 
 ---
 **Author:** Prawin  
