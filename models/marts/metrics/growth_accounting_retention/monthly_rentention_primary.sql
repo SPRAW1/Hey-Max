@@ -4,6 +4,7 @@ WITH events AS (
     DATE(event_date) AS event_date,
     DATE_TRUNC(DATE(event_date), MONTH) AS month_start
   FROM {{ ref('fct_events') }}
+  WHERE event_flag = 'primary_action'
 ),
 
 user_monthly_activity AS (
@@ -54,7 +55,10 @@ final_monthly_metrics AS (
   FROM monthly_summary
 )
 
-SELECT * FROM final_monthly_metrics
+SELECT 
+*,
+SAFE_DIVIDE((new_users + resurrected_users),churned_users) AS quick_ratio
+FROM final_monthly_metrics
 ORDER BY current_month
 
 /*

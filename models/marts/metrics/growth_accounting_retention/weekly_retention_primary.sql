@@ -4,6 +4,7 @@ WITH events AS (
     DATE(event_date) AS event_date,
     DATE_TRUNC(DATE(event_date), WEEK(MONDAY)) AS week_start
   FROM {{ ref('fct_events') }}
+  WHERE event_flag = 'primary_action'
 ),
 
 -- Get unique user-week pairs
@@ -59,7 +60,10 @@ final_weekly_metrics AS (
   FROM weekly_summary
 )
 
-SELECT * FROM final_weekly_metrics
+SELECT 
+*,
+SAFE_DIVIDE((new_users + resurrected_users),churned_users) AS quick_ratio
+ FROM final_weekly_metrics
 ORDER BY current_week
 
 

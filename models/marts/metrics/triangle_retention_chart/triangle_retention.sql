@@ -64,6 +64,7 @@ user_cohort_activity AS(
   FROM {{ ref('fct_events') }} e
   LEFT JOIN user_first_week f ON e.user_id = f.user_id
   LEFT JOIN user_earned_buckets b ON e.user_id = b.user_id
+  AND e.event_date < '2025-06-01'
 ),
 
 retention_by_bucket_day AS(

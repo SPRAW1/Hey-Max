@@ -52,10 +52,10 @@ daily_summary AS (
   FROM labeled_users
   GROUP BY 1
   ORDER BY 1
-)--,
+),
 
 -- Calculate churned users (DAU drop from previous day - retained)
-
+final_daily_metrics AS (
   SELECT
     calendar_date,
     new_users,
@@ -65,3 +65,10 @@ daily_summary AS (
     LAG(current_dau, 1) OVER (ORDER BY calendar_date) - retained_users AS churned_users
   FROM daily_summary
   ORDER BY 1
+)
+
+SELECT 
+*,
+SAFE_DIVIDE((new_users + resurrected_users),churned_users) AS quick_ratio
+FROM final_daily_metrics
+ORDER BY calendar_date
