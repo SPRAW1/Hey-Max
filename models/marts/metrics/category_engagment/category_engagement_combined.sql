@@ -1,3 +1,5 @@
+
+-- Create a filtered event base containing only earned and redeemed miles 
 WITH cat_user_base AS (
   SELECT
     event_date,
@@ -10,6 +12,7 @@ WITH cat_user_base AS (
   AND event_date < '2025-06-01'
 ),
 
+-- Compute total number of unique active users per month (across both earn/redeem)
 active_users AS (
   SELECT
     DATE_TRUNC(event_date, MONTH) AS event_month,
@@ -18,6 +21,7 @@ active_users AS (
   GROUP BY event_month
 ),
 
+-- Aggregate metrics per month, category, and event type
 category_metrics AS (
   SELECT
     DATE_TRUNC(event_date, MONTH) AS event_month,
@@ -30,6 +34,7 @@ category_metrics AS (
   GROUP BY event_month, transaction_category, event_type
 ),
 
+-- Final derived metrics for dashboard display
 final_metrics AS (
   SELECT
     cm.event_month,
@@ -50,6 +55,7 @@ final_metrics AS (
     ON cm.event_month = au.event_month
 )
 
+-- Output: Monthly breakdown by category and event type (earned/redeemed) with user 
 SELECT *
 FROM final_metrics
 ORDER BY event_month, action_type, transaction_category ASC

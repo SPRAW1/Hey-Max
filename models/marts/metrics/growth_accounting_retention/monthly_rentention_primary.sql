@@ -1,3 +1,4 @@
+-- Extract only primary user actions from the event stream which are miles_earned or miles_redeemed
 WITH events AS (
   SELECT 
     user_id,
@@ -7,11 +8,13 @@ WITH events AS (
   WHERE event_flag = 'primary_action'
 ),
 
+-- Get every unique month a user was active
 user_monthly_activity AS (
   SELECT DISTINCT user_id, month_start
   FROM events
 ),
 
+-- For each month a user was active, get the previous active month
 user_month_lagged AS (
   SELECT
     user_id,
@@ -20,6 +23,7 @@ user_month_lagged AS (
   FROM user_monthly_activity
 ),
 
+-- Label user type for the month: new, retained, or resurrected
 labeled_users AS (
   SELECT
     current_month,
@@ -32,7 +36,7 @@ labeled_users AS (
     END AS user_status
   FROM user_month_lagged
 ),
-
+-- Summarize counts
 monthly_summary AS (
   SELECT
     current_month,
@@ -44,6 +48,7 @@ monthly_summary AS (
   GROUP BY 1
 ),
 
+-- Calculate churned users as drop from previous month minus retained
 final_monthly_metrics AS (
   SELECT
     current_month,
@@ -55,23 +60,10 @@ final_monthly_metrics AS (
   FROM monthly_summary
 )
 
+-- Final output: includes quick ratio for growth health indicator
 SELECT 
 *,
 SAFE_DIVIDE((new_users + resurrected_users),churned_users) AS quick_ratio
 FROM final_monthly_metrics
 ORDER BY current_month
 
-/*
---Fringe case  as the month has ended early 
-
---User that has churned in June according to this logic
--- last event date is 31st May 2025
-
-SELECT
-user_id,
-event_date
-FROM {{ref('fct_events')}}
-WHERE user_id = 'u_0065'
-GROUP BY 1,2
-ORDER BY 2
-*/

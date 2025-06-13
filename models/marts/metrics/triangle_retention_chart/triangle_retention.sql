@@ -1,14 +1,5 @@
+-- Get each user's first active day and their 1-week cut-off window
 
-/*
-First a CTE to identify first ever event and 1 week cut off date
-
-Then sum the miles_earned
-
-bucket into groups
-
-then see retention of them
-
-*/
 WITH user_first_week AS(
 SELECT
   user_id,
@@ -19,7 +10,7 @@ FROM {{ ref('fct_events') }}
 GROUP BY user_id
 ),
 
-
+-- Calculate total miles earned during the user's first week
 user_first_week_earned AS(
     SELECT
     e.user_id,
@@ -36,6 +27,7 @@ user_first_week_earned AS(
 
 ),
 
+-- Bucket users by how much they earned in their first week
 user_earned_buckets AS (
 SELECT
     user_id,
@@ -53,8 +45,8 @@ SELECT
   FROM user_first_week_earned
 ),
 
+-- Map user activity to their earning cohort and calculate week offset
 user_cohort_activity AS(
-
  SELECT
     e.user_id,
     e.event_date,
@@ -67,6 +59,7 @@ user_cohort_activity AS(
   AND e.event_date < '2025-06-01'
 ),
 
+--Count retained users per week, by cohort
 retention_by_bucket_day AS(
 SELECT
     earnings_bucket,
@@ -76,6 +69,7 @@ SELECT
   GROUP BY 1, 2
   ),
 
+--Count cohort size (how many users in each earnings bucket)
 cohort_size AS(
 SELECT
     earnings_bucket,
@@ -85,6 +79,7 @@ GROUP BY 1
 ORDER BY 1 ASC
 )
 
+-- Final output gives the Retention Rate per week for each earning bucket
 SELECT
   r.earnings_bucket,
   r.days_since_first_event,
