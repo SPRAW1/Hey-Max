@@ -10,6 +10,21 @@ SELECT
  GROUP BY 1,2
 
 SELECT
+  *
+FROM {{ ref('fct_events') }}
+
+
+SELECT
+    user_id,
+    MIN(event_date) AS cohort_date,
+    ANY_VALUE(utm_source) AS utm_source,
+    ANY_VALUE(platform) AS platform,
+    ANY_VALUE(country) AS country
+  FROM {{ ref('fct_events') }}
+  GROUP BY user_id
+
+
+SELECT
 user_id,
 event_date
 FROM {{ref('fct_events')}}
