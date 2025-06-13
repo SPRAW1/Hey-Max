@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: raw
+    database: strange-mind-462403-p7        # Your BigQuery project ID
+    schema: raw_event_stream                # BigQuery dataset name
+    tables:
+      - name: raw_events_data               # BigQuery table name
