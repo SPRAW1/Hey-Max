@@ -23,7 +23,7 @@ All metrics are visualized in a single Metabase dashboard:
 
 https://lofty-anchor.metabaseapp.com/public/dashboard/4508ab26-d632-405c-b797-7795fa320918 
 
-Metabase was chosen for its ease of self-service for non-technical users. It allows business stakeholders to create "questions"—custom visualizations using a no-code/low-code SQL interface—making it simple for teams to answer their own questions without technical help.
+Metabase was chosen for its ease of self-service for non-technical users. It allows business stakeholders to create "questions" and custom visualizations using a no-code/low-code SQL interface—making it simple for teams to answer their own questions without technical help.
 
 ### 📈 Growth & Retention
 - **Daily/Weekly/Monthly Active Users** (DAU/WAU/MAU)
